@@ -10,6 +10,12 @@ const sequelize = new Sequelize(
         logging: process.env.DB_LOGGING === 'true' ? console.log : false,
         define: {
             underscored: true
+        },
+        pool: {
+            max: 10,
+            min: 1,
+            idle: 1000,
+            acquire: 150000
         }
     }
 )

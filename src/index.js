@@ -17,8 +17,6 @@ async function bootstrap() {
         await sequelize.authenticate();
         associations();
         // await sequelize.sync({ alter: true });
-        // await sequelize.query('ALTER TABLE `projects` ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`leader_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;');
-
 
         console.log('Connection has been established successfully.');
     } catch (error) {
