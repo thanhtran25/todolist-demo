@@ -7,7 +7,7 @@ const tasksRouter = require('./tasks/tasks.router');
 const usersRouter = require('./users/users.router');
 const projectsRouter = require('./projects/projects.router');
 const statisticsRouter = require('./statistics/statistics.router')
-const db = require('./core/associations');
+const db = require('./core/database');
 
 async function bootstrap() {
     const port = parseInt(process.env.SERVER_PORT, 10);

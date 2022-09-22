@@ -4,7 +4,7 @@ const {
     UserTasks,
     Task,
     User
-} = require('../core/associations');
+} = require('../core/database');
 
 async function listTasks() {
     const tasks = await Task.findAll();
