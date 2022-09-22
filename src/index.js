@@ -7,22 +7,13 @@ const tasksRouter = require('./tasks/tasks.router');
 const usersRouter = require('./users/users.router');
 const projectsRouter = require('./projects/projects.router');
 const statisticsRouter = require('./statistics/statistics.router')
-const { sequelize } = require('./core/database');
-const { associations } = require('./core/associations');
+const db = require('./core/associations');
 
 async function bootstrap() {
     const port = parseInt(process.env.SERVER_PORT, 10);
 
-    try {
-        await sequelize.authenticate();
-        associations();
-        // await sequelize.sync({ alter: true });
-
-        console.log('Connection has been established successfully.');
-    } catch (error) {
-        const err = new Error('Unable to connect to the database');
-
-    }
+    await db.sequelize.authenticate();
+    console.log('Connection has been established successfully.');
 
     const app = express();
     app.use(express.json());

@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node src/index.js",
     "start:dev": "nodemon src/index.js",
-    "start:db": "nodemon core/database.js"
+    "start:db": "nodemon core/database.js",
+    "migrate": "sequelize db:migrate",
+    "migrate:undo": "sequelize db:migrate:undo",
+    "migrate:undo:all": "sequelize db:migrate:undo:all"
   },
   "author": "",
   "license": "ISC",

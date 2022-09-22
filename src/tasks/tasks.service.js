@@ -1,8 +1,10 @@
 const { BadRequest, NotFound } = require('http-errors');
-const { User } = require('../users/users.model');
-const { Task } = require('./tasks.model');
-const { Project } = require('../projects/projects.model');
-const { sequelize } = require('../core/database');
+const {
+    Project,
+    UserTasks,
+    Task,
+    User
+} = require('../core/associations');
 
 async function listTasks() {
     const tasks = await Task.findAll();
@@ -49,7 +51,7 @@ async function assignTask(taskId, userId, projectId) {
         throw new BadRequest('Task is not in this project');
     }
 
-    const userTasks = await sequelize.models.UserTasks.create({ userId, taskId });
+    const userTasks = await UserTasks.create({ userId, taskId });
     return userTasks;
 
 }

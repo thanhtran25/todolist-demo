@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt');
-const { Op } = require('sequelize');
 const { BadRequest, Unauthorized } = require('http-errors');
 const jwt = require('jsonwebtoken');
-const { User } = require('../users/users.model');
+const { User } = require('../core/associations');
 const { ROUNDS_NUMBER } = require('../core/constant');
 
 

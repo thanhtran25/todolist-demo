@@ -1,39 +1,31 @@
-// const { DataTypes, Model } = require('sequelize');
-// const { sequelize } = require('../core/database');
-// const { Project } = require('../projects/projects.model');
-// const { User } = require('../users/users.model');
-
-// class UserTask extends Model { };
-
-// UserTask.init({
-//     id: {
-//         type: DataTypes.BIGINT,
-//         primaryKey: true,
-//         allowNull: false,
-//         autoIncrement: true
-//     },
-//     userId: {
-//         type: DataTypes.BIGINT,
-//         allowNull: false,
-//         references: {
-//             model: User,
-//             key: 'id',
-//         }
-//     },
-//     taskId: {
-//         type: DataTypes.STRING,
-//         allowNull: false,
-//         references: {
-//             model: Project,
-//             key: 'id',
-//         }
-//     }
-// }, {
-//     sequelize,
-//     indexes: [{ unique: true, fields: ['userId', 'taskId'] }],
-// })
-
-
-// module.exports = {
-//     UserTask
-// };
+'use strict';
+const {
+    Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+    class UserTasks extends Model {
+        static associate(models) {
+            // define association here
+        }
+    }
+    UserTasks.init({
+        id: {
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            type: DataTypes.BIGINT
+        },
+        idTask: {
+            type: DataTypes.BIGINT,
+            allowNull: false
+        },
+        idUser: {
+            type: DataTypes.BIGINT,
+            allowNull: false
+        }
+    }, {
+        sequelize,
+        modelName: 'UserTasks',
+    });
+    return UserTasks;
+};
