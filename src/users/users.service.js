@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const { BadRequest, Unauthorized } = require('http-errors');
 const jwt = require('jsonwebtoken');
-const { User } = require('../core/associations');
+const { User } = require('../core/database');
 const { ROUNDS_NUMBER } = require('../core/constant');
 
 

@@ -1,6 +1,6 @@
 const { Op, Sequelize } = require('sequelize');
 const { BadRequest, NotFound } = require('http-errors');
-const { User, Project, sequelize } = require('../core/associations');
+const { User, Project, sequelize } = require('../core/database');
 
 async function listProject() {
     const project = await Project.findAll({
