@@ -1,32 +1,36 @@
-const { DataTypes, Model } = require('sequelize');
-const { sequelize } = require('../core/database');
-const { User } = require('../users/users.model');
+const {
+    Model
+} = require('sequelize');
 
-class Project extends Model { }
-
-Project.init({
-    id: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    leaderId: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-        // references: {
-        //     model: User,
-        //     key: 'id',
-        // },
-        unique: true,
+module.exports = (sequelize, DataTypes) => {
+    class Project extends Model {
+        static associate(models) {
+            Project.hasMany(models.User, {
+                foreignKey: 'projectId'
+            });
+            Project.belongsTo(models.User, { foreignKey: 'leaderId' });
+            Project.hasMany(models.Task, { foreignKey: 'projectId' });
+        }
     }
-}, {
-    sequelize,
-})
 
-module.exports = {
-    Project
+    Project.init({
+        id: {
+            type: DataTypes.BIGINT,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        leaderId: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+            unique: true,
+        }
+    }, {
+        sequelize,
+    });
+
+    return Project;
 }

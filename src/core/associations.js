@@ -1,32 +1,45 @@
-const { Project } = require('../projects/projects.model');
-const { Task } = require('../tasks/tasks.model');
-// const { UserTask } = require('../userTasks/userTasks.model');
-const { User } = require('../users/users.model');
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const config = require('../config/config.js');
 
-function associations() {
-    Project.hasMany(User, { foreignKey: 'projectId', as: 'users' });
-    User.belongsTo(Project, { foreignKey: 'projectId', as: 'projects' });
+let sequelize;
+if (config.use_env_variable) {
+    sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+    sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
 
-    User.hasOne(Project, {
-        foreignKey: {
-            name: 'leaderId',
-            allowNull: false,
-            unique: true,
-            as: 'projects'
-        },
+const db = {};
+
+fs
+    .readdirSync(path.join(__dirname, '..'))
+    .filter(dir => {
+        return dir.indexOf('.') === -1;
+    })
+    .forEach(dir => {
+        let modelFile = [];
+        fs
+            .readdirSync(path.join(__dirname, '..', dir))
+            .forEach(file => {
+                // console.log(file);
+                if ((file.indexOf('.') !== 0) && (file.slice(-9) === '.model.js')) {
+                    modelFile.push(file);
+                }
+            });
+        modelFile.forEach(file => {
+            const model = require(path.join(__dirname, '..', dir, file))(sequelize, Sequelize.DataTypes);
+            db[model.name] = model;
+        })
+
     });
+Object.keys(db).forEach(modelName => {
+    if (db[modelName].associate) {
+        db[modelName].associate(db);
+    }
+});
 
-    Project.belongsTo(User, { foreignKey: 'leaderId' });
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-    Project.hasMany(Task, { foreignKey: 'projectId' });
-    Task.belongsTo(Project, { foreignKey: 'projectId' });
-
-    User.belongsToMany(Task, { through: 'UserTasks', foreignKey: 'userId', uniqueKey: ['userId', 'taskId'] });
-    Task.belongsToMany(User, { through: 'UserTasks', foreignKey: 'taskId', uniqueKey: ['userId', 'taskId'] });
-}
-
-module.exports = {
-    associations,
-}
-
-
+module.exports = db;
